@@ -1,0 +1,51 @@
+{
+  "name": "webstandards-starter",
+  "version": "1.0.0",
+  "description": "Starter project for web-development using the web's latest standards.",
+  "main": "src/ImgBoothMain.js",
+  "scripts": {
+    "prepare": "snowpack --include './src/ImgBoothMain.js' --dest './src/lib/'",
+    "start": "browser-sync src -f src --startPath ./index.html --cors --no-notify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/38leinaD/webstandards-starter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/38leinaD/webstandards-starter/issues"
+  },
+  "homepage": "https://github.com/38leinaD/webstandards-starter#readme",
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "snowpack": "^1.1.2"
+  },
+  "dependencies": {
+    "navigo": "^7.1.2",
+    "lit-element": "^2.2.1",
+    "lit-html": "^1.1.2",
+    "lit-translate": "^1.2.1"
+  },
+  "snowpack": {
+    "webDependencies": [
+      "navigo",
+      "lit-element",
+      "lit-html/directives/async-append.js",
+      "lit-html/directives/async-replace.js",
+      "lit-html/directives/cache.js",
+      "lit-html/directives/class-map.js",
+      "lit-html/directives/guard.js",
+      "lit-html/directives/if-defined.js",
+      "lit-html/directives/repeat.js",
+      "lit-html/directives/style-map.js",
+      "lit-html/directives/unsafe-html.js",
+      "lit-html/directives/until.js",
+      "lit-translate"
+    ],
+    "dedupe": [
+      "lit-element",
+      "lit-html"
+    ]
+  }
+}

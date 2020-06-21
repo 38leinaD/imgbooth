@@ -1,0 +1,81 @@
+:root {
+    box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0px;
+
+    background-color: #0a335c;
+    font-family: 'Montserrat', sans-serif;
+}
+
+main {
+    height: 100vh;
+}
+
+nav {
+    position: absolute;
+}
+
+article {
+    
+}
+
+a {
+    color: gray;
+}
+
+/* */
+
+button {
+    font-family: 'Montserrat', sans-serif;
+
+    font-size: 20px;
+    position: absolute;
+    bottom: 0px;
+    border: none;
+    background-color: rgba(0,0,0,0.5);
+    width: 200px;
+    color: white;
+    font-weight: bold;
+}
+
+button:focus {
+    background-color: rgba(0,0,0,1.0);
+}
+
+button.left {
+    left: 10px;
+    border-radius: 5px 5px 0px 0;
+    border-bottom: 10px solid blue;
+}
+
+button.right {
+    right: 10px;
+    border-radius: 5px 5px 0px 0;
+    border-bottom: 10px solid yellow;
+}
+
+.photo-icon {
+    
+    height: 100px;
+    border: 5px solid white;
+    box-shadow: 5px 5px 5px black;
+    transform: rotate(3deg) translateX(0px) scale(0.8);  
+}
+
+.icon {
+    
+    height: 100px;
+    transform: rotate(3deg) translateX(0px) scale(0.8);  
+}
+
+img-take-pictures-view {
+    display: block;
+}

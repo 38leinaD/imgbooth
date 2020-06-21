@@ -1,0 +1,109 @@
+plugins {
+    id 'java'
+    id 'io.quarkus'
+}
+
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+repositories {
+    mavenLocal()
+    /*
+    // For snapshots
+    maven {
+       url "https://oss.sonatype.org/content/repositories/snapshots"
+    }*/
+    mavenCentral()
+    maven {
+        url 'http://www.baka.sk/maven2'
+    }
+}
+
+configurations {
+    webapp
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    
+    implementation 'io.quarkus:quarkus-rest-client'
+    implementation 'io.quarkus:quarkus-resteasy-jsonb'
+    implementation 'io.quarkus:quarkus-jsonp'
+    implementation 'io.quarkus:quarkus-jsonb'
+    implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'io.quarkus:quarkus-undertow'
+    implementation 'io.quarkus:quarkus-smallrye-metrics'
+    implementation 'io.quarkus:quarkus-jdbc-h2'
+    implementation 'io.quarkus:quarkus-hibernate-orm-panache'
+    implementation 'io.quarkus:quarkus-smallrye-context-propagation'
+    implementation 'io.quarkus:quarkus-narayana-jta'
+    implementation 'io.quarkus:quarkus-undertow-websockets'
+    
+    // interfacing with camera/gphoto2
+    implementation 'org.gphoto:gphoto2-java:1.5'
+    // interfacing with webcam
+    implementation 'com.github.sarxos:webcam-capture:0.3.12'
+    // interfacing with printer
+    implementation 'org.cups4j:cups4j:0.7.6'
+    
+    webapp project(":imgbooth-frontend")
+    
+    // jsf
+    implementation('org.apache.myfaces.core.extensions.quarkus:myfaces-quarkus:2.3-next-SNAPSHOT') {
+        exclude group: 'org.graalvm.nativeimage', module: 'svm'
+    }
+    implementation('org.primefaces:primefaces:8.0')
+
+    // test dependencies
+    testCompile 'io.quarkus:quarkus-junit5'
+    testCompile 'org.hamcrest:hamcrest-library:2.1'
+}
+
+task copyFrontend(type: Copy) {
+    dependsOn ":imgbooth-frontend:build"
+    from "${buildDir}/../../imgbooth-frontend/src"
+    into "${buildDir}/resources/main/META-INF/resources"
+    include "**/*"
+}
+
+processResources.dependsOn copyFrontend
+
+group 'de.dplatz'
+version '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_14
+    targetCompatibility = JavaVersion.VERSION_14
+}
+
+// ********* ENABLE JAVA PREVIEW FEATURES *********
+
+compileJava {
+	options.encoding = 'UTF-8'
+    options.compilerArgs += ["-parameters", "--enable-preview"]
+}
+compileTestJava {
+	options.encoding = 'UTF-8'
+    options.compilerArgs += ["--enable-preview"]
+}
+
+test {
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+    jvmArgs ['--enable-preview']
+}
+
+
+quarkusDev {
+    //jvmArgs '--enable-preview'
+}
+
+//Buildship doesn't use that hooks (https://discuss.gradle.org/t/when-does-buildship-eclipse-customization-run/20781/2)
+//you need to run `gradle eclipseJdt` separately
+eclipse.jdt.file.withProperties { props ->
+    props['org.eclipse.jdt.core.compiler.problem.enablePreviewFeatures']= 'enabled'
+    props['org.eclipse.jdt.core.compiler.problem.reportPreviewFeatures']= 'ignore'
+}
+
+eclipse {
+    synchronizationTasks eclipseJdt
+}

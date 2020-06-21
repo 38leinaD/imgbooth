@@ -1,0 +1,14 @@
+{
+  "take-photos": {
+  	"choose": "Choose a photo type...",
+    "singleshot": "Single shot",
+    "collage": "Collage (4 shots)"
+  },
+  "view-photos": {
+    "new-photo": "Next photo",
+    "print-photo": "Print photo",
+    "printing": "Printing...",
+    "take-photo": "Please take the photo...",
+    "print-error": "Ops. There seems to be problem..."
+  }
+}

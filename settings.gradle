@@ -1,0 +1,20 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        /*
+        // For snapshots
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }*/
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    plugins {
+      id 'io.quarkus' version "${quarkusPluginVersion}"
+    }
+}
+
+include 'imgbooth-frontend'
+include 'imgbooth'
+
+rootProject.name='imgbooth-root'
