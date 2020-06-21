@@ -27,6 +27,7 @@ import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.eclipse.microprofile.metrics.annotation.RegistryType;
 
 import de.dplatz.imgbooth.camera.control.CameraDeviceSystem;
+import de.dplatz.imgbooth.camera.control.SynchronizedPreviewStream;
 import de.dplatz.imgbooth.lab.boundary.Filenames;
 import de.dplatz.imgbooth.lab.entity.PhotoUploadedEvent;
 import de.dplatz.imgbooth.lab.entity.PhotoshootMeta;
@@ -44,6 +45,9 @@ public class CameraResource {
     @Inject
     CameraDeviceSystem cameraSystem;
 
+    @Inject
+    SynchronizedPreviewStream previewStream;
+    
     @Inject
     Event<PhotoUploadedEvent> photoUploaded;
 
@@ -82,7 +86,6 @@ public class CameraResource {
         StreamingOutput videoStream = new StreamingOutput() {
             @Override
             public void write(java.io.OutputStream output) throws IOException, WebApplicationException {
-
                 try {
                     BufferedImage lastPreview = null;
                     boolean error = false;
@@ -91,7 +94,7 @@ public class CameraResource {
 
                         BufferedImage preview = null;
                         try {
-                            preview = cameraSystem.getActiveCamera().capturePreview().toCompletableFuture().get();
+                            preview = previewStream.frame().get();
                         }
                         catch (Exception e1) {}
                         if (preview == null) {

@@ -16,6 +16,8 @@ public class AdminCameraSetup {
     @Inject
     CameraDeviceSystem cameraSystem;
     
+    boolean livePreview;
+    
     public Object applyClicked() {
 
         System.out.println("HELLO!!!");
@@ -45,5 +47,13 @@ public class AdminCameraSetup {
         });
 
         return cars;
+    }
+
+    public boolean isLivePreview() {
+        return livePreview;
+    }
+
+    public void setLivePreview(boolean livePreview) {
+        this.livePreview = livePreview;
     }
 }

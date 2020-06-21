@@ -40,8 +40,14 @@
 							value="#{adminCameraSetup.selectedCamera}">
 							<f:selectItems value="#{adminCameraSetup.cameraOptions}" />
 						</p:selectOneMenu>
-
+						
+						<h:outputLabel for="live-view-toggle" value="Live view:" />
+        				
+        				<p:toggleSwitch id="live-view-toggle" value="#{adminCameraSetup.livePreview}" update="preview">
+        				</p:toggleSwitch>
+        				
 					</h:panelGrid>
+					<p:graphicImage id="preview" value="/resources/camera/live" rendered="#{adminCameraSetup.livePreview}" />
 
 					<p:commandButton value="Apply"
 						action="#{adminCameraSetup.applyClicked}" ajax="false" />
