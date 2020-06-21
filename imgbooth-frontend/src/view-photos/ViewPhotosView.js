@@ -166,6 +166,7 @@ export default class ViewPhotosView extends LitElement {
         }
 
         .postcard {
+			min-height: 100vmin;
             max-height: 100vmin;
             border: 10px solid white;
             transform: rotate(3deg) translateX(0px) scale(0.8);  
