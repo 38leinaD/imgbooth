@@ -51,7 +51,7 @@ public class CameraDeviceSystem {
 		logger.info("Using camera " + camera);
 	}
 	
-	void onStart(@Observes ShutdownEvent ev) {               
+	void onShutdown(@Observes ShutdownEvent ev) {               
         logger.info("Shutdown of camera device-system...");
         if (camera != null) {
             camera.close();

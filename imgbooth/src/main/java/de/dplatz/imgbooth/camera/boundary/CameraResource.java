@@ -1,4 +1,7 @@
 package de.dplatz.imgbooth.camera.boundary;
+
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -31,88 +34,116 @@ import de.dplatz.imgbooth.lab.entity.PhotoshootMeta;
 @Path("camera")
 public class CameraResource {
 
-	private static final int LIVEVIEW_TARGET_FPS = 20;
+    private static final int LIVEVIEW_TARGET_FPS = 20;
 
-	Logger logger = Logger.getLogger(CameraResource.class.getName());
+    Logger logger = Logger.getLogger(CameraResource.class.getName());
 
-	@Context
-	UriInfo uriInfo;
+    @Context
+    UriInfo uriInfo;
 
-	@Inject
-	CameraDeviceSystem cameraSystem;
+    @Inject
+    CameraDeviceSystem cameraSystem;
 
-	@Inject
-	Event<PhotoUploadedEvent> photoUploaded;
+    @Inject
+    Event<PhotoUploadedEvent> photoUploaded;
 
-	@Inject
+    @Inject
     @RegistryType(type = MetricRegistry.Type.APPLICATION)
     MetricRegistry metricRegistry;
-	
-	@POST
-	public CompletionStage<Response> takePhoto(@HeaderParam("X-PhotoMeta") PhotoshootMeta photoshoot) {
-		UriBuilder absolutePathBuilder = uriInfo.getAbsolutePathBuilder();
-		logger.info("Requested to take photo for " + photoshoot);
-		return cameraSystem.getActiveCamera().takePhoto()
-				.thenApply(photoFile -> {
-					
-				    var event = new PhotoUploadedEvent(null, photoFile, photoshoot);
-					photoUploaded.fire(event);
 
-					logger.info("Photo taken for" + photoshoot);
+    @POST
+    public CompletionStage<Response> takePhoto(@HeaderParam("X-PhotoMeta") PhotoshootMeta photoshoot) {
+        UriBuilder absolutePathBuilder = uriInfo.getAbsolutePathBuilder();
+        logger.info("Requested to take photo for " + photoshoot);
+        return cameraSystem.getActiveCamera().takePhoto()
+                .thenApply(photoFile -> {
 
-					try {
-						return Response
-								.created(absolutePathBuilder.host(InetAddress.getLocalHost().getHostName() + ".local")
-										.path(photoFile.getName()).build())
-								.header("X-ImageId", Filenames.nameWithoutExtension(photoFile))
-								.build();
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
-				});
-	}
+                    var event = new PhotoUploadedEvent(null, photoFile, photoshoot);
+                    photoUploaded.fire(event);
 
-	@GET
-	@Path("/live")
-	public Response livePreview() throws IOException {
+                    logger.info("Photo taken for" + photoshoot);
 
-		StreamingOutput videoStream = new StreamingOutput() {
-			@Override
-			public void write(java.io.OutputStream output) throws IOException, WebApplicationException {
-				try {
-					// multipart/x-mixed-replace; boundary=--boundary
+                    try {
+                        return Response
+                                .created(absolutePathBuilder.host(InetAddress.getLocalHost().getHostName() + ".local")
+                                        .path(photoFile.getName()).build())
+                                .header("X-ImageId", Filenames.nameWithoutExtension(photoFile))
+                                .build();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+    }
 
-					while (true) {
-						long startFrame = System.currentTimeMillis();
+    @GET
+    @Path("/live")
+    public Response livePreview() throws IOException {
+        
+        StreamingOutput videoStream = new StreamingOutput() {
+            @Override
+            public void write(java.io.OutputStream output) throws IOException, WebApplicationException {
 
-						BufferedImage preview = cameraSystem.getActiveCamera().capturePreview().toCompletableFuture().get();
+                try {
+                    BufferedImage lastPreview = null;
+                    boolean error = false;
+                    while (true) {
+                        long startFrame = System.currentTimeMillis();
 
-						output.write("--boundary\r\n".getBytes());
-						output.write("Content-Type: image/jpeg\r\n".getBytes());
-						output.write(("Content-Length: " + (preview.getWidth() * preview.getHeight() * 3) + "\r\n").getBytes());
-						output.write("\r\n".getBytes());
-						ImageIO.write(preview, "jpg", output);
-						output.write("\r\n".getBytes());
+                        BufferedImage preview = null;
+                        try {
+                            preview = cameraSystem.getActiveCamera().capturePreview().toCompletableFuture().get();
+                        }
+                        catch (Exception e1) {}
+                        if (preview == null) {
+                            error = true;
+                            if (lastPreview != null) {
+                                preview = lastPreview;
+                                Graphics graphics = preview.getGraphics();
+                                graphics.setColor(Color.RED);
+                                graphics.drawString("error", 20, 20);
+                            }
+                        }
+                        else {
+                            lastPreview = preview;
+                        }
+                        
+                        output.write("--boundary\r\n".getBytes());
+                        output.write("Content-Type: image/jpeg\r\n".getBytes());
+                        output.write(("Content-Length: " + (preview.getWidth() * preview.getHeight() * 3) + "\r\n").getBytes());
+                        output.write("\r\n".getBytes());
+                        ImageIO.write(preview, "jpg", output);
+                        output.write("\r\n".getBytes());
 
-						output.flush();
-						
-						long endFrame = System.currentTimeMillis();
-						long frameBudget = 1000 / LIVEVIEW_TARGET_FPS;
-						long usedBudget = endFrame - startFrame;
-						
-						metricRegistry.timer("preview-frame").update(usedBudget, TimeUnit.MILLISECONDS);
-						
-						if (usedBudget > frameBudget) {
-							logger.finer(String.format("Dropping frames on liveview. Used %s ms when budget is %s.", usedBudget, frameBudget));
-						}
-						Thread.sleep(Math.max(0, frameBudget - usedBudget)); // 20 fps
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new WebApplicationException("File Not Found !!");
-				}
-			}
-		};
-		return Response.ok(videoStream, "multipart/x-mixed-replace; boundary=--boundary").build();
-	}
+                        output.flush();
+
+                        long endFrame = System.currentTimeMillis();
+                        long frameBudget = 1000 / LIVEVIEW_TARGET_FPS;
+                        long usedBudget = endFrame - startFrame;
+
+                        metricRegistry.timer("preview-frame").update(usedBudget, TimeUnit.MILLISECONDS);
+
+                        if (usedBudget > frameBudget) {
+                            logger.finer(String.format("Dropping frames on liveview. Used %s ms when budget is %s.", usedBudget,
+                                    frameBudget));
+                        }
+                        
+                        if (error) break;
+                        
+                        Thread.sleep(Math.max(0, frameBudget - usedBudget)); // 20 fps
+                    }
+                } catch (IOException e) {
+                    // Cause: java.lang.IllegalStateException: UT000127: Response has already been sent
+                    // Did the client close? Then, doing nothing is fine.
+                    // TODO Is the client still present? Then, the gif is frozen now and we need to restart the preview-stream
+
+                    System.out.println(">>>Cause: " + e.getCause());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new WebApplicationException("Exception!!!!");
+                }
+            }
+        };
+        return Response.ok(videoStream, "multipart/x-mixed-replace; boundary=--boundary").build();
+    }
 }

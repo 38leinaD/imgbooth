@@ -41,7 +41,6 @@ public class WebCamera implements ICamera {
 		lock.acquireUninterruptibly();
 		try {
 			webcam.open();
-			webcam.getImage(); // Just to warm up... :-)
 		} finally {
 			lock.release();
 		}
@@ -84,7 +83,13 @@ public class WebCamera implements ICamera {
 	public CompletionStage<BufferedImage> capturePreview() {
 		try {
 			lock.acquire();
+			if (!webcam.isOpen()) {
+			    // e.g. usb disconnect
+			    lock.release();
+			    return CompletableFuture.failedFuture(new IllegalStateException("Camera is closed."));
+			}
 		} catch (InterruptedException e) {
+		    lock.release();
 			return CompletableFuture.failedFuture(e);
 		}
 		return CompletableFuture.supplyAsync(() -> {

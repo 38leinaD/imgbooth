@@ -71,7 +71,7 @@ export default class TakePhotosView extends LitElement {
                 e.preventDefault();
             }
             else if (e.key == "2") {
-				this.takeCollagePhoto();
+                this.takeCollagePhoto();
                 e.preventDefault();
             }
         };
@@ -80,15 +80,15 @@ export default class TakePhotosView extends LitElement {
         this.initWebcam();
     }
 
-	takeSinglePhoto() {
-		this.mode = Mode.Single;
+    takeSinglePhoto() {
+        this.mode = Mode.Single;
         this.transition(States.Countdown);
-	}
-	
-	takeCollagePhoto() {
-		this.mode = Mode.Collage;
+    }
+
+    takeCollagePhoto() {
+        this.mode = Mode.Collage;
         this.transition(States.Countdown);
-	}
+    }
 
     hasPreviewCamera() {
         return config["previewwebcam.enabled"] == "true";
@@ -168,8 +168,10 @@ export default class TakePhotosView extends LitElement {
     renderCamera() {
         return html`
             <link rel="stylesheet" type="text/css" media="screen" href="./style.css" />
-
-			<img class="live-preview" src="http://localhost:8080/resources/camera/live"></img>
+        
+            <div class="live-preview-container">
+                <img class="live-preview" src="${this.livePreviewUrl()}" @error="${e => this.onLivePreviewError(e)}"></img>
+            </div>
             ${this.state == States.Idle && !this.hasPreviewCamera() ? html`
                 <div class="idle-container">
                     <div class="idle-message-container">
@@ -189,6 +191,15 @@ export default class TakePhotosView extends LitElement {
             <div class="camera-flash"></div>
             ${this.state == States.Countdown ? html`<img-countdown></img-countdown>` : html``}
         `;
+    }
+
+    livePreviewUrl() {
+        //return '../assets/preview.jpg';
+        return 'http://localhost:8080/resources/camera/live';
+    }
+
+    onLivePreviewError(e) {
+        console.log("live preview error", e)
     }
 
     renderSelection() {
@@ -356,14 +367,18 @@ export default class TakePhotosView extends LitElement {
             height: 100%;
         }
 
+        .live-preview-container {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
         .live-preview {
-
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-
-  z-index: -1;
+            min-height: 100vmin;
+            max-height: 100vmin;
         }
                 
         .flash{ 

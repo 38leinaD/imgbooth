@@ -28,7 +28,7 @@ export default class ViewPhotosView extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-		this.photoId = this.getAttribute("photo");
+        this.photoId = this.getAttribute("photo");
 
         this.keyboardListener = (e) => {
             console.log(e)
@@ -80,7 +80,7 @@ export default class ViewPhotosView extends LitElement {
     }
 
     photoUrl() {
-		return `http://localhost:8080/resources/photos/${this.photoId}`;
+        return `http://localhost:8080/resources/photos/${this.photoId}`;
         //return `http://localhost:8080/resources/photos/photoshoots/${window.currentImage}`;
     }
 
@@ -166,7 +166,7 @@ export default class ViewPhotosView extends LitElement {
         }
 
         .postcard {
-			min-height: 100vmin;
+            min-height: 100vmin;
             max-height: 100vmin;
             border: 10px solid white;
             transform: rotate(3deg) translateX(0px) scale(0.8);  
