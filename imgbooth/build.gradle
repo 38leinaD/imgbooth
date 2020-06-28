@@ -54,6 +54,7 @@ dependencies {
     implementation('org.apache.myfaces.core.extensions.quarkus:myfaces-quarkus:2.3-next-SNAPSHOT')
     //implementation 'com.github.apache.myfaces:myfaces-quarkus:master-SNAPSHOT'
     implementation 'org.primefaces:primefaces:8.0'
+    implementation 'com.github.adminfaces:admin-theme:1.1.0'
 
     // test dependencies
     testCompile 'io.quarkus:quarkus-junit5'

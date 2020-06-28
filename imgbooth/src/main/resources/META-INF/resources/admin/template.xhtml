@@ -16,57 +16,118 @@
         </f:facet>
         <title>imgbooth admin</title>
 
-        <h:outputStylesheet name="admin/style.css"/>
 
-
-        <script type="text/javascript">
-     //<![CDATA[
-
-        $('#menu-button').off('click.showcase').on('click.showcase', function(e) {
-            $(document.body).children('.layout-wrapper').toggleClass('layout-sidebar-mobile-active')
-            $(document.body).toggleClass('hidden-overflow-body')
-        });
-
-
-     //]]>
-        </script>
 
         <ui:insert name="head"/>
+        <ui:insert name="head-end"/>
+
+        <h:outputScript library="js" name="slideout.min.js" target="head"/>
+        <h:outputScript library="js" name="adminslide.js" target="head"/>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('.slideout-menu').removeClass('slideout-menu');
+                    $('.slideout-panel').removeClass('slideout-panel');
+                });
+
+            </script>
         
     </h:head>
 
-    <h:body>
+    <h:body styleClass="skin-blue sidebar-mini sidebar-collapse">
+    <ui:insert name="body-begin"/>
         <p:growl>
             <p:autoUpdate />
         </p:growl>
-        <div class="layout-wrapper">
+        
 
-            <ui:include src="./topbar.xhtml"></ui:include>
-            <ui:include src="./menu.xhtml"></ui:include>
+        <div class="wrapper">
 
-            <div class="layout-content">
-                <ui:insert name="content">
-                    <div class="content-section content-submenu">
-                        <ui:insert name="submenu"></ui:insert>
-                    </div>
-                    <div class="content-section content-introduction">
-                        <h1><ui:insert name="title"></ui:insert></h1>
-                        <p><ui:insert name="description"></ui:insert></p>
-  
-                    </div>
-                    <div class="content-section content-implementation #{guestPreferences.theme.startsWith('luna') ? 'dark-content' : null}">
-                        <ui:insert name="implementation"></ui:insert>
-                    </div>
-                    
-                </ui:insert>
+        <header class="main-header">
+            <a href="#{request.contextPath}/" class="logo">
+            <span class="logo-mini">
+                <ui:insert name="logo-mini"/>
+            </span>
+            <span class="logo-lg">
+                <ui:insert name="logo-lg"/>
+            </span>
+            <span class="logo-lg">
+                <ui:insert name="logo"/>
+            </span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only"></span>
+            </a>
+            <div class="navbar-custom-menu">
+                <ui:insert name="top-menu"/>
             </div>
 
-            <div class="layout-mask"></div>
+            <div class="center-navbar">
+                <ui:insert name="center-header"/>
+            </div>
+            <div class="mobile-header">
+                <h4></h4>
+            </div>
+        </nav>
+        </header>
 
+        <aside id="sidebar" class="main-sidebar slideout-menu">
+            <div>
+                <ui:insert name="menu-begin"/>
+                <section class="sidebar">
+                    <ul class="sidebar-menu">
+                        <li>
+                            <p:link href="index">
+                                <i class="fa fa-home"></i>
+                                <span>Home</span>
+                            </p:link>
+                        </li>
+                        <li class="header">
+                            General
+                        </li>
+                        <li>
+                            <p:link href="appearance">
+                                <i class="fa fa-car"></i>
+                                <span>Appearance</span>
+                            </p:link>
+                        </li>
+                        <li>
+                            <p:link href="camera">
+                                <i class="fa fa-car"></i>
+                                <span>Camera</span>
+                            </p:link>
+                        </li>
+                    </ul>
+                </section>
+                <ui:insert name="menu-end"/>
+            </div>
+        </aside>
+
+        <h:panelGroup layout="block" id="content" styleClass="content-wrapper">
+        <ui:insert name="content-wrapper"/>
+            <section class="content-header">
+                <h1><ui:insert name="title"></ui:insert></h1>
+            </section>
+
+            <section class="content">
+                
+                <ui:insert name="content">
+                    
+                </ui:insert>
+
+            </section>
+</h:panelGroup>
+
+
+
+<footer class="main-footer">
+            <ui:insert name="footer"/>
+        </footer>
         </div>
 
         
-        <ui:insert name="body"></ui:insert>
+        
+
 
     </h:body>
 
