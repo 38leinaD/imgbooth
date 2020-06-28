@@ -22,7 +22,8 @@ public class MutableConfigSource implements ConfigSource {
     @Override
     public String getValue(String key) {
         ConfigManager configManager = ConfigManager.get();
-        return configManager.get(key);
+        String value = configManager.get(key);
+        return value;
     }
 
     @Override

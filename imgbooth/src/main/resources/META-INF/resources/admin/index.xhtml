@@ -52,6 +52,19 @@
 					<p:commandButton value="Apply"
 						action="#{adminCameraSetup.applyClicked}" ajax="false" />
 				</p:tab>
+				<p:tab title="Appearance">
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+						<p:outputLabel for="language" value="Language:" />
+						<p:selectOneMenu id="language"
+							value="#{adminAppearanceSetup.selectedLocale}">
+							<f:selectItems value="#{adminAppearanceSetup.localeOptions}" />
+						</p:selectOneMenu>
+						
+					</h:panelGrid>
+
+					<p:commandButton value="Apply"
+						action="#{adminAppearanceSetup.applyClicked}" ajax="false" />
+				</p:tab>
 			</p:accordionPanel>
 		</h:form>
 		<!-- Ctrl+Shift-e -->

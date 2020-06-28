@@ -12,6 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.enterprise.event.Event;
+import javax.enterprise.inject.spi.CDI;
+
 // TODO: Make CDI bean if possible
 public class ConfigManager {
 
@@ -19,8 +22,9 @@ public class ConfigManager {
     
     public static ConfigManager get() {
         if (INSTANCE == null) {
-            INSTANCE = new ConfigManager();
-            INSTANCE.init();
+            ConfigManager inst = new ConfigManager();
+            inst.init();
+            INSTANCE = inst;
         }
         return INSTANCE;
     }
@@ -29,9 +33,6 @@ public class ConfigManager {
     
     private Properties properties = new Properties();
 
-    //@Inject
-    //Event<ConfigChangedEvent> configChangedEvent;
-    
     private static final Path CONFIG_FILE_PATH = Paths.get("./config.properties");
     
     public void init() {
@@ -46,6 +47,8 @@ public class ConfigManager {
     
     public void put(String key, String value) {
         properties.put(key, value);
+        
+        CDI.current().select(Event.class).get().fire(new ConfigChangedEvent(key, value));
         flushToDisk();
     }
     

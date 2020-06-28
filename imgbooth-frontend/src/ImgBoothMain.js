@@ -5,7 +5,7 @@ import './take-photos/TakePhotosView.js'
 import './view-photos/ViewPhotosView.js'
 
 import serverConnection from './common/ServerConnection.js';
-//import PhotoboxLifecycle from './PhotoboxLifecycle.js';
+import ImgBoothController from './ImgBoothController.js';
 import { registerTranslateConfig, use } from "/lib/lit-translate.js";
 
 
@@ -32,7 +32,8 @@ export default class ImgBoothMain extends LitElement {
 		await use("en");
 
         this.initRouter();
-        //await new PhotoboxLifecycle(this.connection).run();
+        
+		await new ImgBoothController(serverConnection).startup();
     }
 
     firstUpdated(changedProperties) {
