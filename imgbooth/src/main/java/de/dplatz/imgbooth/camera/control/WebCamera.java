@@ -52,7 +52,6 @@ public class WebCamera implements ICamera {
 		try {
 			if (webcam != null && webcam.isOpen()) {
 				webcam.close();
-				webcam = null;
 			}
 		} finally {
 			lock.release();

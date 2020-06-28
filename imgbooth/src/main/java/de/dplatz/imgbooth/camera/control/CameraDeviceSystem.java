@@ -9,8 +9,9 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.config.ConfigProvider;
 
+import de.dplatz.imgbooth.ImgBoothConfig;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 
@@ -22,14 +23,6 @@ public class CameraDeviceSystem {
 	@Inject
 	Instance<ICameraProvider> cameraProviders;
 	
-	@Inject
-	@ConfigProperty(name = "photobooth.camera.provider", defaultValue = "WebCamera")
-	String configuredCameraName;
-	
-    @Inject
-    @ConfigProperty(name = "photobooth.camera.name")
-    String cameraName;
-	
 	ICamera camera;
 	
 	List<ICamera> availableCameras = new LinkedList<ICamera>();
@@ -37,18 +30,25 @@ public class CameraDeviceSystem {
 	void onStart(@Observes StartupEvent ev) {               
 		logger.info("Initializing camera device-system...");
 		for (ICameraProvider cameraProvider : cameraProviders) {
-			if (cameraProvider.getClass().getSuperclass().getSimpleName().startsWith(configuredCameraName)) { // getClass().getSuperclass().getSimpleName() only works with Weld/Quarkus
 			    availableCameras.addAll(cameraProvider.getCameras());
-			    for (ICamera cam : cameraProvider.getCameras()) {
-				    if (cam.getName().startsWith(cameraName)) {
-				        this.activateCamera(cam);
-				        break;
-				    }
-				}
-			}
 		}
-		if (camera == null)	throw new RuntimeException("Unable to resolve Camera based on configured photobooth.camera = " + configuredCameraName);
-		logger.info("Using camera " + camera);
+		if (availableCameras == null)	throw new RuntimeException("Unable to find a camera on this system.");
+		
+		String cameraName = ConfigProvider.getConfig().getOptionalValue(ImgBoothConfig.CAMERA_NAME, String.class).orElse(null);
+		ICamera selectedCamera = null;
+		if (cameraName != null) {
+		    for (ICamera cam : availableCameras) {
+		        if (cam.getName().startsWith(cameraName)) {
+		            selectedCamera = cam;
+		            break;
+		        }
+		    }
+		}
+		
+		if (selectedCamera == null) {
+		    selectedCamera = availableCameras.get(0);
+		}
+        this.activateCamera(selectedCamera);
 	}
 	
 	void onShutdown(@Observes ShutdownEvent ev) {               
@@ -63,11 +63,12 @@ public class CameraDeviceSystem {
 	}
 	
 	public void activateCamera(ICamera camera) {
-	    System.out.println("** ACTIVATING " + camera.getName());
+        logger.info("Activating camera " + camera.getName());
+        if (this.camera != null) {
+            this.camera.close();
+        }
 	    this.camera = camera;
 	    this.camera.open();
-	    
-	    // TODO close previous
 	}
 	
 	public List<ICamera> getAvailableCameras() {

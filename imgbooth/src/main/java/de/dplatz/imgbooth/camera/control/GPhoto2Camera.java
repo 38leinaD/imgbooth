@@ -35,9 +35,6 @@ public class GPhoto2Camera implements ICamera {
 	@ConfigProperty(name = "photobooth.storagePath", defaultValue = "/tmp")
 	String storagePath;
 
-	@Inject
-	@ConfigProperty(name = "photobooth.camera.name")
-	String cameraName;
 
 	private Camera camera;
 	private Semaphore lock = new Semaphore(1);

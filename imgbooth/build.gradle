@@ -39,6 +39,8 @@ dependencies {
     implementation 'io.quarkus:quarkus-narayana-jta'
     implementation 'io.quarkus:quarkus-undertow-websockets'
     
+    implementation 'com.github.38leinaD:quarkus-livereload-extension:999-SNAPSHOT'
+
     // interfacing with camera/gphoto2
     implementation 'org.gphoto:gphoto2-java:1.5'
     // interfacing with webcam

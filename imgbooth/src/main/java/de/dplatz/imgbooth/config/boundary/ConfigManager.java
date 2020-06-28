@@ -6,55 +6,62 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
-
-@ApplicationScoped
+// TODO: Make CDI bean if possible
 public class ConfigManager {
-    private Map<String, Object> config;
+
+    private static ConfigManager INSTANCE;
+    
+    public static ConfigManager get() {
+        if (INSTANCE == null) {
+            INSTANCE = new ConfigManager();
+            INSTANCE.init();
+        }
+        return INSTANCE;
+    }
+    
+    Logger logger = Logger.getLogger(ConfigManager.class.getName());
+    
+    private Properties properties = new Properties();
 
     //@Inject
     //Event<ConfigChangedEvent> configChangedEvent;
     
-    private static final Path CONFIG_FILE_PATH = Paths.get("./config.json");
+    private static final Path CONFIG_FILE_PATH = Paths.get("./config.properties");
     
-    @PostConstruct
-    public void init() throws IOException {
-        config = new ConcurrentHashMap<String, Object>();
-
+    public void init() {
         if (Files.exists(CONFIG_FILE_PATH)) {
-            JsonbBuilder.create().fromJson(new FileReader(CONFIG_FILE_PATH.toFile()), HashMap.class);
+            try {
+                properties.load(new FileReader(CONFIG_FILE_PATH.toFile()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     
-    public void put(String key, Object value) {
-        config.put(key, value);
-        //configChangedEvent.fire(new ConfigChangedEvent());
+    public void put(String key, String value) {
+        properties.put(key, value);
         flushToDisk();
     }
     
-    public Object get(String key) {
-        return config.get(key);
+    public String get(String key) {
+        return (String) properties.get(key);
     }    
     
-    public Map<String, Object> getAll() {
-        return Collections.unmodifiableMap(config);
+    public Map<String, String> getAll() {
+        return properties.entrySet().stream().collect(Collectors.toMap(e -> (String)e.getKey(), e -> (String)e.getKey()));
     }
     
     private void flushToDisk() {
         try {
-            JsonbConfig jsonbConfig = new JsonbConfig();
-            jsonbConfig.withFormatting(true);
-            JsonbBuilder.create(jsonbConfig).toJson(this.config, new FileWriter(CONFIG_FILE_PATH.toFile()));
+            properties.store(new FileWriter(CONFIG_FILE_PATH.toFile()), "");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.log(Level.WARNING, "Unable to store config-change to file-system", e);
         }
     }
 }
