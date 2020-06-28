@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="layout-sidebar">
+        <div class="nano">
+            <div class="nano-content menu-scroll-content">
+                <ul id="layout-menu" class="layout-menu">
+    
+                    <li id="submenu-button">
+                        <h:link outcome="appearance">
+                            <span>Appearance</span>
+                        </h:link>
+                    </li>
+
+                    <li id="submenu-button">
+                        <h:link outcome="camera">
+                            <span>Camera</span>
+                        </h:link>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</ui:composition>

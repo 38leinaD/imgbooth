@@ -14,9 +14,8 @@ repositories {
        url "https://oss.sonatype.org/content/repositories/snapshots"
     }*/
     mavenCentral()
-    maven {
-        url 'http://www.baka.sk/maven2'
-    }
+    maven { url 'https://jitpack.io' }
+    maven { url 'http://www.baka.sk/maven2' }
 }
 
 configurations {
@@ -51,10 +50,10 @@ dependencies {
     webapp project(":imgbooth-frontend")
     
     // jsf
-    implementation('org.apache.myfaces.core.extensions.quarkus:myfaces-quarkus:2.3-next-SNAPSHOT') {
-        exclude group: 'org.graalvm.nativeimage', module: 'svm'
-    }
-    implementation('org.primefaces:primefaces:8.0')
+    // locally built; no built available on maven-central.
+    implementation('org.apache.myfaces.core.extensions.quarkus:myfaces-quarkus:2.3-next-SNAPSHOT')
+    //implementation 'com.github.apache.myfaces:myfaces-quarkus:master-SNAPSHOT'
+    implementation 'org.primefaces:primefaces:8.0'
 
     // test dependencies
     testCompile 'io.quarkus:quarkus-junit5'
