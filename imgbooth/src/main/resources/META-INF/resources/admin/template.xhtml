@@ -1,79 +1,58 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf"
+    lang="en">
 
-    <h:head>
-        <f:facet name="first">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0"/>
-            <meta name="apple-mobile-web-app-capable" content="yes"/>
-        </f:facet>
-        <title>imgbooth admin</title>
+<h:head>
+    <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+    </f:facet>
+    <title>imgbooth admin</title>
+</h:head>
 
+<h:body styleClass="skin-blue ">
+    <!--options: sidebar-mini sidebar-collapse-->
+    <p:growl>
+        <p:autoUpdate />
+    </p:growl>
 
-
-        <ui:insert name="head"/>
-        <ui:insert name="head-end"/>
-
-        <h:outputScript library="js" name="slideout.min.js" target="head"/>
-        <h:outputScript library="js" name="adminslide.js" target="head"/>
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('.slideout-menu').removeClass('slideout-menu');
-                    $('.slideout-panel').removeClass('slideout-panel');
-                });
-
-            </script>
-        
-    </h:head>
-
-    <h:body styleClass="skin-blue sidebar-mini sidebar-collapse">
-    <ui:insert name="body-begin"/>
-        <p:growl>
-            <p:autoUpdate />
-        </p:growl>
-        
-
-        <div class="wrapper">
+    <div class="wrapper">
 
         <header class="main-header">
             <a href="#{request.contextPath}/" class="logo">
-            <span class="logo-mini">
-                <ui:insert name="logo-mini"/>
-            </span>
-            <span class="logo-lg">
-                <ui:insert name="logo-lg"/>
-            </span>
-            <span class="logo-lg">
-                <ui:insert name="logo"/>
-            </span>
-        </a>
-        <nav class="navbar navbar-static-top">
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                <span class="sr-only"></span>
+                <span class="logo-mini">
+                    <ui:insert name="logo-mini" />
+                </span>
+                <span class="logo-lg">
+                    <ui:insert name="logo-lg" />
+                </span>
+                <span class="logo-lg">
+                    <ui:insert name="logo" />
+                </span>
             </a>
-            <div class="navbar-custom-menu">
-                <ui:insert name="top-menu"/>
-            </div>
+            <nav class="navbar navbar-static-top">
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only"></span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ui:insert name="top-menu" />
+                </div>
 
-            <div class="center-navbar">
-                <ui:insert name="center-header"/>
-            </div>
-            <div class="mobile-header">
-                <h4></h4>
-            </div>
-        </nav>
+                <div class="center-navbar">
+                    <ui:insert name="center-header" />
+                </div>
+                <div class="mobile-header">
+                    <h4></h4>
+                </div>
+            </nav>
         </header>
 
         <aside id="sidebar" class="main-sidebar slideout-menu">
             <div>
-                <ui:insert name="menu-begin"/>
+                <ui:insert name="menu-begin" />
                 <section class="sidebar">
                     <ul class="sidebar-menu">
                         <li>
@@ -99,36 +78,27 @@
                         </li>
                     </ul>
                 </section>
-                <ui:insert name="menu-end"/>
             </div>
         </aside>
 
         <h:panelGroup layout="block" id="content" styleClass="content-wrapper">
-        <ui:insert name="content-wrapper"/>
+            <ui:insert name="content-wrapper" />
             <section class="content-header">
-                <h1><ui:insert name="title"></ui:insert></h1>
+                <h1>
+                    <ui:insert name="title"></ui:insert>
+                </h1>
             </section>
 
             <section class="content">
-                
                 <ui:insert name="content">
-                    
                 </ui:insert>
-
             </section>
-</h:panelGroup>
+        </h:panelGroup>
 
-
-
-<footer class="main-footer">
-            <ui:insert name="footer"/>
+        <footer class="main-footer">
+            <ui:insert name="footer" />
         </footer>
-        </div>
-
-        
-        
-
-
-    </h:body>
+    </div>
+</h:body>
 
 </html>

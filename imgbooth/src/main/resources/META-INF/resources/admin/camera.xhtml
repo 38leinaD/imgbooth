@@ -1,10 +1,6 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:jsf="http://xmlns.jcp.org/jsf"
-                template="template.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf" template="template.xhtml">
 
     <ui:define name="title">
         Camera
@@ -16,24 +12,22 @@
 
         <h:form>
             <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                        <p:outputLabel for="camera" value="Camera:" />
-                        <p:selectOneMenu id="camera"
-                            value="#{adminCameraSetup.selectedCamera}">
-                            <f:selectItems value="#{adminCameraSetup.cameraOptions}" />
-                        </p:selectOneMenu>
-                        
-                        <h:outputLabel for="live-view-toggle" value="Live view:" />
-                        
-                        <p:toggleSwitch id="live-view-toggle" value="#{adminCameraSetup.livePreview}" update="preview">
-                        </p:toggleSwitch>
-                        
-                    </h:panelGrid>
-                    <p:graphicImage id="preview" value="/resources/camera/live" />
+                <p:outputLabel for="camera" value="Camera:" />
+                <p:selectOneMenu id="camera" value="#{adminCameraSetup.selectedCamera}">
+                    <f:selectItems value="#{adminCameraSetup.cameraOptions}" />
+                </p:selectOneMenu>
 
-                    <p:commandButton value="Apply"
-                        action="#{adminCameraSetup.applyClicked}" ajax="false" />
+                <h:outputLabel for="live-view-toggle" value="Live view:" />
+
+                <p:toggleSwitch id="live-view-toggle" value="#{adminCameraSetup.livePreview}" update="preview">
+                </p:toggleSwitch>
+
+            </h:panelGrid>
+            <p:graphicImage id="preview" value="/resources/camera/live" />
+
+            <p:commandButton value="Apply" action="#{adminCameraSetup.applyClicked}" ajax="false" />
         </h:form>
-        
+
     </ui:define>
 
 </ui:composition>
