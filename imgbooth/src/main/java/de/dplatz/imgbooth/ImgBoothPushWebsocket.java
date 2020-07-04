@@ -14,7 +14,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import de.dplatz.imgbooth.config.boundary.ConfigChangedEvent;
+import io.smallrye.config.events.ChangeEvent;
 
 @ServerEndpoint("/events")
 @ApplicationScoped
@@ -42,13 +42,13 @@ public class ImgBoothPushWebsocket {
         System.out.println("Received message from client: " + message);
     }
 
-    public void onConfigChangedEvent(@Observes ConfigChangedEvent event) {
+    public void onConfigChangedEvent(@Observes ChangeEvent event) {
         this.send(event);
     }
 
     public void send(Object event) {
         Jsonb jsonb = JsonbBuilder.create();
-        final String jsonString = jsonb.toJson(event);
+        final String jsonString = jsonb.toJson(new ImgBoothEventWrapper(event));
 
         sessions.forEach(session -> session.getAsyncRemote().sendObject(jsonString, result -> {
             if (result.getException() != null) {

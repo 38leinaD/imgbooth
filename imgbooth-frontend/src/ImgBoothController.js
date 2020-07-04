@@ -10,7 +10,7 @@ export default class PhotoboxLifecycle {
     async startup() {
         await this.initializeWebsocketConnection();
         await this.initialConfigLoad()
-		await this.finalizeStartup();
+        await this.finalizeStartup();
     }
 
     initializeWebsocketConnection() {
@@ -39,8 +39,8 @@ export default class PhotoboxLifecycle {
         console.log("Websocket received message: ", message)
 
         const event = JSON.parse(message.data);
-        if (event.type == 'ConfigChangedEvent') {
-            this.onConfigChangedEvent(event);
+        if (event.type == 'ChangeEvent') {
+            this.onConfigChangedEvent(event.event);
         }
     }
 
@@ -49,23 +49,22 @@ export default class PhotoboxLifecycle {
         config.setAll(await response.json());
     }
 
-	async finalizeStartup() {
-		// set locale from server
-		await this.setLocaleFromConfig();
+    async finalizeStartup() {
+        // set locale from server
+        await this.setLocaleFromConfig();
 
-	}
-	
-	async setLocaleFromConfig() {
-		await use(config.get("imgbooth.locale"))
-	}
+    }
 
-    onConfigChangedEvent(event) {
-        console.log("XXXXXXXXXX")
-		config.set(event.configKey, event.configValue);
+    async setLocaleFromConfig() {
+        await use(config.get("imgbooth.locale"))
+    }
+
+    onConfigChangedEvent({ key, newValue }) {
+        config.set(key, newValue);
         //window.location.reload();
 
-		if (event.configKey == 'imgbooth.locale') {
-			this.setLocaleFromConfig();
-		}
+        if (key == 'imgbooth.locale') {
+            this.setLocaleFromConfig();
+        }
     }
 }

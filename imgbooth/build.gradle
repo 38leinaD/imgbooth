@@ -38,6 +38,8 @@ dependencies {
     implementation 'io.quarkus:quarkus-narayana-jta'
     implementation 'io.quarkus:quarkus-undertow-websockets'
     
+    implementation 'io.smallrye.config:smallrye-config-events:1.8.1'
+    
     implementation 'com.github.38leinaD:quarkus-livereload-extension:999-SNAPSHOT'
 
     // interfacing with camera/gphoto2
@@ -96,7 +98,7 @@ test {
 
 
 quarkusDev {
-    //jvmArgs '--enable-preview'
+//    jvmArgs ['--enable-preview']
 }
 
 //Buildship doesn't use that hooks (https://discuss.gradle.org/t/when-does-buildship-eclipse-customization-run/20781/2)
