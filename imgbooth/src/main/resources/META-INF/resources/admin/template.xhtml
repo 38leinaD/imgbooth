@@ -10,10 +10,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
     </f:facet>
+    <h:outputScript name="/admin/js/slideout.min.js" />
+    <h:outputScript name="/admin/js/slimscroll.min.js" />
+    <h:outputScript name="/admin/js/adminslide.js" />
+    <h:outputScript name="/admin/js/admintemplate.js" />
+
     <title>imgbooth admin</title>
 </h:head>
 
-<h:body styleClass="skin-blue ">
+<h:body styleClass="skin-blue">
     <!--options: sidebar-mini sidebar-collapse-->
     <p:growl>
         <p:autoUpdate />
@@ -37,15 +42,12 @@
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only"></span>
                 </a>
-                <div class="navbar-custom-menu">
-                    <ui:insert name="top-menu" />
-                </div>
 
                 <div class="center-navbar">
                     <ui:insert name="center-header" />
                 </div>
                 <div class="mobile-header">
-                    <h4></h4>
+                    <h4>imgbooth admin</h4>
                 </div>
             </nav>
         </header>
@@ -66,13 +68,13 @@
                         </li>
                         <li>
                             <p:link href="appearance">
-                                <i class="fa fa-car"></i>
+                                <i class="fa fa-eye"></i>
                                 <span>Appearance</span>
                             </p:link>
                         </li>
                         <li>
                             <p:link href="camera">
-                                <i class="fa fa-car"></i>
+                                <i class="fa fa-camera"></i>
                                 <span>Camera</span>
                             </p:link>
                         </li>
@@ -99,6 +101,15 @@
             <ui:insert name="footer" />
         </footer>
     </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.slideout-menu').removeClass('slideout-menu');
+            $('.slideout-panel').removeClass('slideout-panel');
+        });
+
+    </script>
 </h:body>
 
 </html>
