@@ -40,7 +40,7 @@ dependencies {
     
     implementation 'io.smallrye.config:smallrye-config-events:1.8.1'
     
-    implementation 'com.github.38leinaD:quarkus-livereload-extension:999-SNAPSHOT'
+    //implementation 'com.github.38leinaD:quarkus-livereload-extension:999-SNAPSHOT'
 
     // interfacing with camera/gphoto2
     implementation 'org.gphoto:gphoto2-java:1.5'
@@ -93,12 +93,6 @@ compileTestJava {
 
 test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
-    jvmArgs ['--enable-preview']
-}
-
-
-quarkusDev {
-//    jvmArgs ['--enable-preview']
 }
 
 //Buildship doesn't use that hooks (https://discuss.gradle.org/t/when-does-buildship-eclipse-customization-run/20781/2)
