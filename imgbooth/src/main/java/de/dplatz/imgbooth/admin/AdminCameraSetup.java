@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.enterprise.inject.Model;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.dplatz.imgbooth.ImgBoothConfig;
 import de.dplatz.imgbooth.camera.control.CameraDeviceSystem;
 import de.dplatz.imgbooth.camera.control.ICamera;
 import de.dplatz.imgbooth.config.boundary.ConfigManager;
 
-@Model
+@Named
+@SessionScoped
 public class AdminCameraSetup {
     
     Logger logger = Logger.getLogger(AdminCameraSetup.class.getName());

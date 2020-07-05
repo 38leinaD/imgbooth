@@ -7,18 +7,32 @@
     </ui:define>
 
     <ui:define name="content">
+		<h:form id="form" prependId="false">
+			<p:focus context="@form" />
+			<p:panel styleClass="box-primary card">
+				<div id="main-buttons" class="hidden-sm hidden-xs">
+					<p:commandButton value="Save"
+						action="#{adminAppearanceSetup.applyClicked}" update="@form"
+						icon="fa fa-check" styleClass="btn-primary" />
 
-        <h:form>
-            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                <p:outputLabel for="language" value="Language:" />
-                <p:selectOneMenu id="language" value="#{adminAppearanceSetup.selectedLocale}">
-                    <f:selectItems value="#{adminAppearanceSetup.localeOptions}" />
-                </p:selectOneMenu>
+				</div>
 
-            </h:panelGrid>
+				<p:separator />
+				<div class="ui-g ui-fluid">
+					<div class="ui-sm-12 ui-g-6 ui-g-nopad">
+						<div class="ui-sm-12 ui-g-11">
+							<p:outputLabel for="language" value="Language" />
+						</div>
+						<div class="ui-sm-12 ui-g-11">
+							<p:selectOneMenu id="language" value="#{adminAppearanceSetup.selectedLocale}">
+			                    <f:selectItems value="#{adminAppearanceSetup.localeOptions}" />
+			                </p:selectOneMenu>
+						</div>
+					</div>
+				</div>
+			</p:panel>
 
-            <p:commandButton value="Apply" action="#{adminAppearanceSetup.applyClicked}" ajax="false" />
-        </h:form>
+		</h:form>
 
     </ui:define>
 
