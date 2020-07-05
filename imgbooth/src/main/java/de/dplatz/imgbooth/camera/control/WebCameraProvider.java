@@ -15,7 +15,7 @@ import com.github.sarxos.webcam.Webcam;
 
 @ApplicationScoped
 public class WebCameraProvider implements ICameraProvider {
-    Logger logger = Logger.getLogger(WebCamera.class.getName());
+    Logger logger = Logger.getLogger(WebCameraProvider.class.getName());
 
     List<ICamera> cameras = new LinkedList<ICamera>();
        

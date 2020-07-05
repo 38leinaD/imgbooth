@@ -19,7 +19,7 @@ import com.github.sarxos.webcam.Webcam;
 
 @ApplicationScoped
 public class GPhoto2CameraProvider implements ICameraProvider {
-    Logger logger = Logger.getLogger(WebCamera.class.getName());
+    Logger logger = Logger.getLogger(GPhoto2CameraProvider.class.getName());
 
     List<ICamera> cameras = new LinkedList<ICamera>();
 
@@ -30,15 +30,16 @@ public class GPhoto2CameraProvider implements ICameraProvider {
 
         logger.info("GPhoto version: " + Camera.getLibraryVersion());
         final CameraList cameras = new CameraList();
-        logger.info("Cameras: " + cameras);
+        for (int i = 0; i < cameras.getCount(); i++) {
+            String cameraName = cameras.getModel(i);
+            logger.info("Available camera: " + cameraName);
+
+            GPhoto2Camera camera = CDI.current().select(GPhoto2Camera.class).get();
+            camera.setNativeCamera(cameraName, null);
+            //camera.setNativeCamera(cameraName, cameras.getPortInfo(i)); // TODO: Crashes with segfault; lib needs to be updated...
+            this.cameras.add(camera);
+        }
         CameraUtils.closeQuietly(cameras);
-
-        Camera nativeCamera = new Camera();
-
-        GPhoto2Camera camera = CDI.current().select(GPhoto2Camera.class).get();
-        camera.setNativeCamera(nativeCamera);
-        this.cameras.add(camera);
-
     }
 
     private void killGphoto2Service() {

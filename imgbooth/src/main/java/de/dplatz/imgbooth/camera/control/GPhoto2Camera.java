@@ -18,6 +18,8 @@ import org.gphoto2.Camera;
 import org.gphoto2.CameraFile;
 import org.gphoto2.CameraUtils;
 
+import com.sun.jna.Pointer;
+
 import io.quarkus.arc.Unremovable;
 
 @Dependent
@@ -29,17 +31,25 @@ public class GPhoto2Camera implements ICamera {
     @ConfigProperty(name = "photobooth.storagePath", defaultValue = "/tmp")
     String storagePath;
 
+    private String name;
+    private Pointer portInfo;
+    
     private Camera nativeCamera;
     private Semaphore lock = new Semaphore(1);
 
-    public void setNativeCamera(Camera nativeCamera) {
-        this.nativeCamera = nativeCamera;
+    public void setNativeCamera(String name, Pointer portInfo) {
+        this.name = name;
+        this.portInfo = portInfo;
     }
 
     @Override
     public void open() {
         lock.acquireUninterruptibly();
         try {
+            if (nativeCamera == null) {
+                nativeCamera = new Camera();
+                //nativeCamera.setPortInfo(portInfo);
+            }
             nativeCamera.initialize();
         } finally {
             lock.release();
@@ -102,6 +112,6 @@ public class GPhoto2Camera implements ICamera {
 
     @Override
     public String getName() {
-        return nativeCamera.toString();
+        return name;
     }
 }
