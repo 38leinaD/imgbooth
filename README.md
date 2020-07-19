@@ -1,49 +1,62 @@
+![ImgBooth](https://raw.github.com/38leinaD/imgbooth/master/imgbooth-frontend/src/assets/logo.svg)
+
 # ImgBooth
 
-:warning: This software is still in development!
+## Inspiration
+I have been building a photobox for my wife's birthday but struggled with the available software.
+There is no good open-source/free software. The one I used on the event was a commercial Windows-based application. It did it's job but did not offer a lot of choices I cared for. E.g. giving the user the option if he wants to take a single shot or make a series of 4 photos to produce a collage.
 
-ImgBooth is an open source software for photoboxes as seen on weddings/parties.
-The software allows to set up such a photobox from a normal PC/laptop, camera (e.g. a Canon DSLR) and printer (e.g. Canon Selphy).
-As the software is developed with Java, it runs on all major operating systems (Windows, Linux, Mac) and at some point should also be useable with raspberry pi.
+## What it does
+The software allows to drive a photobox by connecting a DSLR camera via the Gphoto2 library or a plain Webcam. It also allows to connect a photo-printer.
+The main application runs full-screen in a browser and guides the user to take either a single shot or 4-photo-series.
+Afterwards, the image (or generated collage) is presented to the user with a choice to print it on the connected printer.
 
-![Basic setup](./setup.svg)
-<img src="./setup.svg">
+Additionally, the software has a second Web-UI that allows to control the photobox. Currently, it allows to change the used camera or language settings. It is built as a Web-UI so it can be opened on a photo.
 
-Intentions/Pitch:
-- Why are you not using the brower's support for webcams and instead handle the camera in the Java backend? This solution is intended mainly for connecting DSLR cameras which do not expose a webcam interface. Instead, the solution is about shooting high-quality photos with a DSLR. The support for Webcams is mainly for development and not the main purpose of this solution.
-- Why is the admin interface written in JSF? Because I wanted a solution that can be opend in a webbrowser on e.g. a phone to control the photobox. And why did i not use the same approach/technology as for the photobox frontend? Because JSF is a very productive technology for me. It is very simple to provide complex UIs with inputs, selections, validations, etc. The admin interface does not have to be pixel-perfect and as flashy as the photobox frontend; JSF hits a sweet-spot that balances productivity and nice/consistent visuals.
 
-- Why Quarkus for the backend? 
+## How I built it
+I built the software as a combination of different technologies I always wanted to try to combine:
+
+* Quarkus-based backend that exposes restful interfaces to control the camera or download images
+* HTML4 / Lit-Html-based UI for the photobox frontend
+* JSF-based admin interface (using Quarkus MyFaces extension)
+
+## Challenges I ran into
+The main challenge (and important requirement) currently is the performance of the preview-feed for the camera. The camera shows a live preview stream to the users. The GPhoto2 library allows to access the DSLR-cameras live-feed only by saving it to disk and then accessing it from there. For a stream/feed, this is a lot of IO and it would be better to stream it from the camera to memory.
+I will try to experiment with using a ramdisk or if it is necessary to directly access the camera interface without GPhoto2.
+The advantage of GPhoto2 is that it supports a lot of camera-types, but the delay of the feed on screen is noticeable; ~1-2 seconds.
+
+## Accomplishments that I'm proud of
+I am proud of what i was able to achieve in a few days. I.e. bringing together the backend with a rather nice-looking frontend; and even get JSF working for the admin-interface.
+
+## What I learned
+I learned a lot about Quarkus, LitHtml and that even nowadays, performance is important. The live-feed runs fine on my modern PC; but on the old laptop in the photobox, the software shows a noticable delay for the live-feed.
+
+## What's next for imgbooth
+This is basically only a proof-of-concept at the current stage. It needs a lot of error-handling in the front-end and proof that is can run for a whole evening without constant monitoring (the admin interface will help with it though).
+I might be setting it up on a neighborhood event next weekend to see how it performs.
+The admin-interface still needs a simple way to restart the whole application so i dont have to fiddle with the laptop in the photobox directly.
 
 ## :rocket: Installation
 
-TODO
+You will need JDK 11 and NPM installed on your system to build the software from source.
 
+Run:
 
-## :warning: Developer Info
-
-### Preparations
-
-#### Frontend development with VSCode
-
-* Run the task 'Allow automatic tasks in this folder' within VSCode and restart VSCode. This will automatically start the typescript-compiler in watch-mode.
-
-### Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
-```
-./gradlew quarkusDev
-```
-
-### Packaging and running the application
-
-The application is packageable using `./gradlew quarkusBuild`.
-It produces the executable `app-1.0.0-SNAPSHOT-runner.jar` file in `build` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/lib` directory.
-
-The application is now runnable using `java -jar build/app-1.0.0-SNAPSHOT-runner.jar`.
-
-If you want to build an _über-jar_, just add the `--uber-jar` option to the command line:
 ```
 ./gradlew quarkusBuild --uber-jar
 ```
+
+It produces the executable `imgbooth-1.0.0-SNAPSHOT-runner.jar` file in the `imgbooth/build` directory.
+
+The application is now runnable using `java -jar imgbooth/build/imgbooth-1.0.0-SNAPSHOT-runner.jar`.
+
+A browser should automatically open and show the UI. In case no browser opens, you can manually open the UI by opening <http://localhost:8080/index.html> in a browser.
+
+
+You can control the two on-screen buttons with the keyboard.
+
+* left button by pressing "1"
+* right button by pressing "2" 
+
+By default, it should be using your default Webcam. To change the camera that is used, open the admin interface at <http://localhost:8080/admin/camera.xhtml>.
