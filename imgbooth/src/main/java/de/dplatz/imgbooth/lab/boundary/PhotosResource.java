@@ -43,6 +43,7 @@ public class PhotosResource {
 	@GET
 	@Path("{file}")
 	public Response download(@PathParam("file") String fileName) throws IOException {
+	    System.out.println("!!!!!!!!!!!!! FILE REQUESTED " + fileName);
 		File localFile = new File("/tmp/" + fileName);
 	    return Response.ok(localFile, localFile.getName().endsWith(".jpeg") ? "image/jpeg" : "image/png").build();
 	}

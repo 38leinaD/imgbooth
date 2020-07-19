@@ -80,8 +80,8 @@ export default class ViewPhotosView extends LitElement {
     }
 
     photoUrl() {
-        return `http://localhost:8080/resources/photos/${this.photoId}`;
-        //return `http://localhost:8080/resources/photos/photoshoots/${window.currentImage}`;
+        //return `http://localhost:8080/resources/photos/${this.photoId}`;
+        return `http://localhost:8080/resources/photos/photoshoots/${this.photoId}`;
     }
 
     imageLoaded() {

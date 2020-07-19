@@ -76,19 +76,19 @@ group 'de.dplatz'
 version '1.0.0-SNAPSHOT'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_14
-    targetCompatibility = JavaVersion.VERSION_14
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 // ********* ENABLE JAVA PREVIEW FEATURES *********
 
 compileJava {
 	options.encoding = 'UTF-8'
-    options.compilerArgs += ["-parameters", "--enable-preview"]
+    //options.compilerArgs += ["-parameters", "--enable-preview"]
 }
 compileTestJava {
 	options.encoding = 'UTF-8'
-    options.compilerArgs += ["--enable-preview"]
+    //options.compilerArgs += ["--enable-preview"]
 }
 
 test {
