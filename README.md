@@ -3,7 +3,7 @@
 # ImgBooth
 
 ## :sunrise: Inspiration
-I have been building a photobox for my wife's birthday but struggled with the available software.
+For my wife's birthday, I have been building a photobox (wooden box with camera and laptop inside) but struggled with the available software.
 There is no good open-source/free software. The one I used on the event was a commercial Windows-based application. It did it's job but did not offer a lot of choices I cared for. E.g. giving the user the option if he wants to take a single shot or make a series of 4 photos to produce a collage.
 
 ## :question:	What it does
@@ -11,8 +11,9 @@ The software allows to drive a photobox by connecting a DSLR camera via the Gpho
 The main application runs full-screen in a browser and guides the user to take either a single shot or 4-photo-series.
 Afterwards, the image (or generated collage) is presented to the user with a choice to print it on the connected printer.
 
-Additionally, the software has a second Web-UI that allows to control the photobox. Currently, it allows to change the used camera or language settings. It is built as a Web-UI so it can be opened on a photo.
+![architecture](https://raw.github.com/38leinaD/imgbooth/master/photobox.svg)
 
+Additionally, the software has a second Web-UI that allows to control the photobox. Currently, it allows to change the used camera or language settings. It is built as a Web-UI so it can be opened on a photo.
 
 ## :construction_worker: How I built it
 I built the software as a combination of different technologies I always wanted to try to combine:
