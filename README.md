@@ -1,4 +1,4 @@
-![ImgBooth](https://raw.github.com/38leinaD/imgbooth/master/imgbooth-frontend/src/assets/logo.svg)
+![ImgBooth](https://raw.github.com/38leinaD/imgbooth/master/imgbooth-frontend/src/assets/logo.png)
 
 # ImgBooth
 
@@ -45,15 +45,14 @@ You will need JDK 11 and NPM installed on your system to build the software from
 Run:
 
 ```
-./gradlew quarkusBuild --uber-jar
+$ ./gradlew quarkusBuild --uber-jar
 ```
 
-It produces the executable `imgbooth-1.0.0-SNAPSHOT-runner.jar` file in the `imgbooth/build` directory.
+It produces the `imgbooth-1.0.0-SNAPSHOT-runner.jar` file in the `imgbooth/build` directory.
 
 The application is now runnable using `java -jar imgbooth/build/imgbooth-1.0.0-SNAPSHOT-runner.jar`.
 
 A browser should automatically open and show the UI. In case no browser opens, you can manually open the UI by opening <http://localhost:8080/index.html> in a browser.
-
 
 You can control the two on-screen buttons with the keyboard.
 
@@ -61,3 +60,14 @@ You can control the two on-screen buttons with the keyboard.
 * right button by pressing "2" 
 
 By default, it should be using your default Webcam. To change the camera that is used, open the admin interface at <http://localhost:8080/admin/camera.xhtml>.
+
+For support of DSLR cameras, the GPhoto2 library is required. Search on Google to see how it can be installed on your distribution. Ideally, it should be no more than
+
+```
+$ sudo apt install gphoto2
+$ sudo apt install libgphoto2-6
+```
+
+To use a printer, it needs to be set up as the default CUPS printer.
+
+I have succesfully tested this software with a Canon EOS M50 and a Canon Selphy 1300 printer.
