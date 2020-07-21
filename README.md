@@ -13,7 +13,7 @@ Afterwards, the image (or generated collage) is presented to the user with a cho
 
 ![architecture](https://raw.github.com/38leinaD/imgbooth/master/photobox.svg)
 
-Additionally, the software has a second Web-UI that allows to control the photobox. Currently, it allows to change the used camera or language settings. It is built as a Web-UI so it can be opened on a photo.
+Additionally, the software has a second Web-UI that allows to control the photobox. Currently, it allows to change the used camera or language settings. It is built using JSF so it can be opened on a smartphone to easily control the photobox.
 
 ## :construction_worker: How I built it
 I built the software as a combination of different technologies I always wanted to try to combine:
