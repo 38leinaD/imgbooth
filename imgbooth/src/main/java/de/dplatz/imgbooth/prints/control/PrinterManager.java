@@ -13,7 +13,7 @@ public class PrinterManager {
 	Instance<PrintService> printServices;
 	
 	@Inject
-	@ConfigProperty(name = "photobooth.printer", defaultValue = "cups")
+	@ConfigProperty(name = "imgbooth.printer", defaultValue = "cups")
 	String configuredPrinter;
 	
 	@ApplicationScoped
@@ -23,6 +23,6 @@ public class PrinterManager {
 		for (PrintService ps : printServices) {
 			if (ps.getClass().getSimpleName().toLowerCase().startsWith(configuredPrinter)) return ps;
 		}
-		throw new RuntimeException("Unable to resolve PrintService based on configured photobooth.printer = " + configuredPrinter);
+		throw new RuntimeException("Unable to resolve PrintService based on configured imgbooth.printer = " + configuredPrinter);
 	}
 }

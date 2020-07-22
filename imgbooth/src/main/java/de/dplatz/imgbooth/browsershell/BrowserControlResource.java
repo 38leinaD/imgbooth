@@ -13,7 +13,7 @@ public class BrowserControlResource {
 	
 	Logger logger = Logger.getLogger(BrowserControlResource.class.getName());
 
-	@ConfigProperty(name = "photobooth.exitOnBrowserClose", defaultValue = "true")
+	@ConfigProperty(name = "imgbooth.exitOnBrowserClose", defaultValue = "true")
 	boolean exitBrowserClose;
 	
 	@POST

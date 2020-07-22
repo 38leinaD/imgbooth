@@ -80,28 +80,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-// ********* ENABLE JAVA PREVIEW FEATURES *********
-
-compileJava {
-	options.encoding = 'UTF-8'
-    //options.compilerArgs += ["-parameters", "--enable-preview"]
-}
-compileTestJava {
-	options.encoding = 'UTF-8'
-    //options.compilerArgs += ["--enable-preview"]
-}
-
 test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
-}
-
-//Buildship doesn't use that hooks (https://discuss.gradle.org/t/when-does-buildship-eclipse-customization-run/20781/2)
-//you need to run `gradle eclipseJdt` separately
-eclipse.jdt.file.withProperties { props ->
-    props['org.eclipse.jdt.core.compiler.problem.enablePreviewFeatures']= 'enabled'
-    props['org.eclipse.jdt.core.compiler.problem.reportPreviewFeatures']= 'ignore'
-}
-
-eclipse {
-    synchronizationTasks eclipseJdt
 }

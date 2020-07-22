@@ -10,7 +10,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class ImageConverterProducer {
 	Logger logger = Logger.getLogger(ImageConverterProducer.class.getName());
 
-	@ConfigProperty(name = "photobooth.imageconversion", defaultValue = "java")
+	@ConfigProperty(name = "imgbooth.imageconversion", defaultValue = "java")
 	String imageConversion;
 	
 	@Produces

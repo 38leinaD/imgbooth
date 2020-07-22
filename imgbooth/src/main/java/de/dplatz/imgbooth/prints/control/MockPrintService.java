@@ -12,7 +12,7 @@ public class MockPrintService implements PrintService {
 	Logger logger = Logger.getLogger(MockPrintService.class.getName());
 
 	@Inject
-	@ConfigProperty(name = "photobooth.printer.printduration")
+	@ConfigProperty(name = "imgbooth.printer.printduration")
 	Integer printDuration;
 	
 	@Override

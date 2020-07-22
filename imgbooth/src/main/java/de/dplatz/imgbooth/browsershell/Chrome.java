@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.microprofile.config.ConfigProvider;
+
 public class Chrome {
 
     Logger logger = Logger.getLogger(Chrome.class.getName());
@@ -72,7 +74,7 @@ public class Chrome {
                     profileDir = tmpDir + File.separator + "imgbooth-chrome-profile";
                     logger.info(String.format("Using %s to store temporary chrome profile.", profileDir));
                     // --chrome-frame --kiosk
-                    cmdExt = " --start-fullscreen ";
+                    cmdExt = ConfigProvider.getConfig().getValue("imgbooth.chromeflags", String.class);
                 }
 
                 File oldDevToolsFile = Paths.get(profileDir, "DevToolsActivePort").toFile();
@@ -80,7 +82,7 @@ public class Chrome {
                     oldDevToolsFile.delete();
                 }
 
-                String cmd = executable + " --app=" + uri.toString() + cmdExt;
+                String cmd = executable + " --app=" + uri.toString() + " " + cmdExt;
                 logger.info(String.format("Present! Running '" + cmd + "'."));
 
                 boolean result = runExecutable(cmd);
@@ -109,7 +111,7 @@ public class Chrome {
 
     private String findExecutable() {
 
-        for (String exe : Arrays.asList("google-chrome", "chromium-browser")) {
+        for (String exe : Arrays.asList("chromium-browser", "chromium", "google-chrome")) {
             logger.fine("Checking for '" + exe + "' executable...");
 
             if (envPath.isExecutableOnPath(exe)) {

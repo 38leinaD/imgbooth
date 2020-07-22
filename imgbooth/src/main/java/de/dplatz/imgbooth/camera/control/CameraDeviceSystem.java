@@ -2,6 +2,7 @@ package de.dplatz.imgbooth.camera.control;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -27,6 +28,8 @@ public class CameraDeviceSystem {
 	
 	List<ICamera> availableCameras = new LinkedList<ICamera>();
 	
+	CompletableFuture<Void> cameraSystemReady = new CompletableFuture<>();
+	
 	void onStart(@Observes StartupEvent ev) {               
 		logger.info("Initializing camera device-system...");
 		for (ICameraProvider cameraProvider : cameraProviders) {
@@ -49,6 +52,7 @@ public class CameraDeviceSystem {
 		    selectedCamera = availableCameras.get(0);
 		}
         this.activateCamera(selectedCamera);
+        cameraSystemReady.complete(null);
 	}
 	
 	void onShutdown(@Observes ShutdownEvent ev) {               
@@ -73,5 +77,9 @@ public class CameraDeviceSystem {
 	
 	public List<ICamera> getAvailableCameras() {
 	    return availableCameras;
+	}
+	
+	public CompletableFuture<Void> cameraSystemReadiness() {
+	    return cameraSystemReady;
 	}
 }

@@ -294,7 +294,7 @@ export default class TakePhotosView extends LitElement {
 
     async takePicture() {
         console.log("Take picture #" + (this.photoCount + 1))
-        this.flash();
+        //this.flash();
 
         const photoMeta = this.mode == Mode.Collage ?
             {

@@ -22,11 +22,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class CupsPrintService implements PrintService {
 	@Inject
-	@ConfigProperty(name = "photobooth.storagePath", defaultValue = "/tmp")
+	@ConfigProperty(name = "imgbooth.storagePath", defaultValue = "/tmp")
 	String storagePath;
 	
 	@Inject
-	@ConfigProperty(name = "photobooth.printer.printduration")
+	@ConfigProperty(name = "imgbooth.printer.printduration")
 	Integer printDuration;
 	
 	Logger logger = Logger.getLogger(PrintService.class.getName());

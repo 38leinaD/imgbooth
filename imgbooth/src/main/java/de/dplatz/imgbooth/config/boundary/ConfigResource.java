@@ -33,11 +33,11 @@ public class ConfigResource {
         HashMap<String, String> configProperties = new HashMap<String, String>();
         
         StreamSupport.stream(config.getPropertyNames().spliterator(), false).filter(name -> name.startsWith(CONFIG_PREFIX + ".")).forEach(name -> {
-            configProperties.putIfAbsent(name, config.getValue(name, String.class));
+            config.getOptionalValue(name, String.class).ifPresent(value -> configProperties.putIfAbsent(name, value));
         });
         
         StreamSupport.stream(config.getPropertyNames().spliterator(), false).filter(name -> name.startsWith("%dev." + CONFIG_PREFIX + ".")).forEach(name -> {
-            configProperties.putIfAbsent(name.substring("%dev.".length() + 1), config.getValue(name, String.class));
+            config.getOptionalValue(name, String.class).ifPresent(value -> configProperties.putIfAbsent(name.substring("%dev.".length() + 1), value));
         });
         
         configProperties.entrySet().stream().forEach(e -> jsonObjectBuilder.add(e.getKey(), e.getValue()));
